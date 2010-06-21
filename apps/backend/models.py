@@ -37,6 +37,9 @@ class Item(models.Model):
     def get_absolute_url(self):
         return self.get_url()
 
+    def __unicode__(self):
+        return unicode(self.name)
+
 
 class Price(models.Model):
     '''A price of an Item on any given day.'''
@@ -47,4 +50,7 @@ class Price(models.Model):
     min_price = models.PositiveIntegerField(blank=True, null=True)
     volume = models.PositiveIntegerField(blank=True, null=True)
     seven_day_volume = models.PositiveIntegerField(blank=True, null=True)
+
+    def get_absolute_url(self):
+        return self.item.get_url()
 

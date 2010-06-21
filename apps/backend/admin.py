@@ -8,7 +8,9 @@ class ItemAdmin(admin.ModelAdmin):
 
 class PriceAdmin(admin.ModelAdmin):
     list_display = ('item', 'day', 'min_price', 'price', 'max_price', 'volume', 'seven_day_volume')
+    list_filter = ('day',)
     raw_id_fields = ['item']
+    search_fields = ['item__name', 'day']
 
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Price, PriceAdmin)
