@@ -10,6 +10,8 @@ def rs_str_to_int(string):
         num = float(string[:-1]) * 1000
     elif string[-1] == 'm':
         num = float(string[:-1]) * 1000000
+    elif string[-1] == 'b':
+        num = float(string[:-1]) * 1000000000
     else:
         num = float(string)
     return int(num + 0.5)

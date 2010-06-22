@@ -43,7 +43,7 @@ def loop_and_parse_indexes():
         while True:
             content = read_url(get_index_url(letter, page))
             if 'did not return' in content: break
-            print letter, page, url
+            print "Parsing page %i of letter '%s'" % (page, letter)
             parse_index(content)
             if 'Next &gt;<br>' in content: break
             page += 1
