@@ -1,4 +1,4 @@
-import global_settings
+from global_settings import *
 
 DATABASES = {
     'default': {

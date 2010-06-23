@@ -48,10 +48,10 @@ def wait_for_update():
         if new_test_item_info != test_item_info:
             logging.debug(new_test_item_info)
             logging.debug(test_item_info)
-            test_item_info = new_test_item_info
-            save_item_info(test_item_info)
             time.sleep(300)
             update_items()
+            test_item_info = new_test_item_info
+            save_item_info(test_item_info)
         # Sleep for 5 minutes
         time.sleep(300)
 
