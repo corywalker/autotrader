@@ -33,7 +33,7 @@ def read_url(url):
         try:
             content = urllib2.urlopen(url).read()
             success = True
-        except httplib.BadStatusLine, urllib2.URLError:
+        except (httplib.BadStatusLine, urllib2.URLError):
             logging.debug('There was an error. Retrying %s' % url)
     return content
 

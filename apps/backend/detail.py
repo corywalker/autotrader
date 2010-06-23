@@ -21,9 +21,12 @@ def get_detail_info(html):
     max_price = int(rs_str_to_int(spans[2].contents[2][1:-1]))
     return min_price, price, max_price, examine
 
+def get_detail_info_from_id(rs_id):
+    html = read_url(get_detail_url(rs_id))
+    return get_detail_info(html)
+
 def parse_detail(item):
-    html = read_url(get_detail_url(item.rs_id))
-    info = get_detail_info(html)
+    info = get_detail_info_from_id(item.rs_id)
     item.examine = info[3]
     item.save()
     price = get_or_create_price(item, get_day_id())
