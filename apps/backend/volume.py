@@ -1,4 +1,5 @@
 import re
+import logging
 
 from BeautifulSoup import BeautifulSoup
 
@@ -36,7 +37,7 @@ def loop_and_parse_volumes():
         item = Item.objects.get(rs_id=info[0])
         try:
             price = Price.objects.get(item=item, day=get_day_id())
-            print 'Updating the info for ID #%i' % item.rs_id
+            logging.debug('Updating the info for ID #%i' % item.rs_id)
             price.seven_day_volume = info[1]
             price.save()
         except Price.DoesNotExist: pass
@@ -46,10 +47,8 @@ def loop_and_parse_front_volumes():
         item = Item.objects.get(rs_id=info[0])
         try:
             price = Price.objects.get(item=item, day=get_day_id())
-            print 'Updating the info for ID #%i' % item.rs_id
+            logging.debug('Updating the info for ID #%i' % item.rs_id)
             price.volume = info[1]
             price.save()
         except Price.DoesNotExist: pass
 
-loop_and_parse_volumes()
-loop_and_parse_front_volumes()

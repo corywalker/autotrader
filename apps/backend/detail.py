@@ -1,4 +1,5 @@
 import re
+import logging
 
 from BeautifulSoup import BeautifulSoup
 
@@ -33,6 +34,6 @@ def parse_detail(item):
 
 def loop_details():
     for item in Item.objects.filter(examine=None).all():
-        print 'Updating the info for ID #%i' % item.rs_id
+        logging.debug('Updating the info for ID #%i' % item.rs_id)
         parse_detail(item)
 

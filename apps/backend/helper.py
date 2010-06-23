@@ -1,6 +1,7 @@
 import urllib2
 import httplib
 import datetime
+import logging
 
 from backend.models import Price
 
@@ -33,6 +34,6 @@ def read_url(url):
             content = urllib2.urlopen(url).read()
             success = True
         except httplib.BadStatusLine, urllib2.URLError:
-            print 'There was an error. Retrying...'
+            logging.debug('There was an error. Retrying %s' % url)
     return content
 

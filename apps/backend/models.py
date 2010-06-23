@@ -3,7 +3,7 @@ from django.db import models
 class Item(models.Model):
     '''An item linked to an item in RS.'''
     rs_id = models.PositiveIntegerField(verbose_name='Runescape ID')
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=40)
     members = models.BooleanField()
     examine = models.CharField(max_length=150, blank=True, null=True)
 
