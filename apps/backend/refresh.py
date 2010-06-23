@@ -8,9 +8,22 @@ from backend.detail import loop_details, get_detail_info_from_id
 from backend.volume import loop_and_parse_volumes, loop_and_parse_front_volumes
 
 LOG_FILENAME = 'autotrader.log'
-logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 ITEM_INFO_FILENAME = 'test_item_info.dat'
 TEST_ITEMS = [560, 561, 562, 563]
+
+def initialize_logging():
+    logging.basicConfig(filename=LOG_FILENAME,
+                        level=logging.DEBUG,
+                        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+                        datefmt='%m-%d %H:%M')
+    # define a Handler which writes to the sys.stderr
+    console = logging.StreamHandler()
+    # set a format which is simpler for console use
+    formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s', '%m-%d %H:%M')
+    # tell the handler to use this format
+    console.setFormatter(formatter)
+    # add the handler to the root logger
+    logging.getLogger('').addHandler(console)
 
 def update_items():
     loop_and_parse_indexes()
@@ -41,17 +54,22 @@ def save_item_info(item_info):
     pickle.dump(item_info, file)
     file.close()
 
-def wait_for_update():
+def refresh():
+    initialize_logging()
+    logging.debug('refresh() loop started.')
     test_item_info = load_item_info()
     while True:
         new_test_item_info = get_test_item_info(30)
         if new_test_item_info != test_item_info:
+            logging.debug('Detected a price change:')
             logging.debug(new_test_item_info)
             logging.debug(test_item_info)
-            time.sleep(300)
+            time.sleep(600)
             update_items()
             test_item_info = new_test_item_info
             save_item_info(test_item_info)
-        # Sleep for 5 minutes
-        time.sleep(300)
+        else:
+            logging.debug('No price change.')
+        # Sleep for 10 minutes
+        time.sleep(600)
 
