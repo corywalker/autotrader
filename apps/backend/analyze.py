@@ -22,4 +22,8 @@ def average_price(item, days):
 
 def compute_potentials():
     for item in Item.objects.all():
-        pass
+        prices = get_prices(item, 30)
+        average = average_price(item, 30)
+        price_changes = get_price_changes(item, 30)
+        regression = get_price_change_regression(item, days)
+        dip = 1 - (prices[0] / average)

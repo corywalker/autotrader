@@ -54,3 +54,9 @@ class Price(models.Model):
     def get_absolute_url(self):
         return self.item.get_url()
 
+class Potential(models.Model):
+    '''The potential for price rise on a given day.'''
+    item = models.ForeignKey(Item)
+    day = models.PositiveIntegerField()
+    potential = models.DecimalField(decimal_places=5, max_digits=10)
+
