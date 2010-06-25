@@ -4,9 +4,6 @@ PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(PROJECT_PATH, 'apps')) #PROJECT_PATH from local_settings
 sys.path.append(PROJECT_PATH) #PROJECT_PATH from local_settings
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     ('Cory Walker', 'cwalker32@gmail.com'),
 )
@@ -48,7 +45,7 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '&=4itamipxz^1d37c!xx39u4k(qe_mi#v5#_g29ffbgxmy7adx'
