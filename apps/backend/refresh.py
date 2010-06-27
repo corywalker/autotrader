@@ -6,6 +6,8 @@ import os.path
 from backend.index import loop_and_parse_indexes
 from backend.detail import loop_details, get_detail_info_from_id
 from backend.volume import loop_and_parse_volumes, loop_and_parse_front_volumes
+from backend.analyze import compute_potentials
+from backend.models import Update
 
 LOG_FILENAME = 'autotrader.log'
 ITEM_INFO_FILENAME = 'test_item_info.dat'
@@ -30,6 +32,7 @@ def update_items():
     loop_and_parse_volumes()
     loop_and_parse_front_volumes()
     loop_details()
+    compute_potentials()
 
 def get_test_item_info(delay):
     test_item_info = []
@@ -64,10 +67,11 @@ def refresh():
             logging.debug('Detected a price change:')
             logging.debug(new_test_item_info)
             logging.debug(test_item_info)
-            time.sleep(600)
-            update_items()
             test_item_info = new_test_item_info
             save_item_info(test_item_info)
+            Update().save()
+            time.sleep(600)
+            update_items()
         else:
             logging.debug('No price change.')
         # Sleep for 10 minutes

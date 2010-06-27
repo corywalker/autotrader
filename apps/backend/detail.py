@@ -4,7 +4,7 @@ import logging
 from BeautifulSoup import BeautifulSoup
 
 from backend.models import Item
-from backend.helper import rs_str_to_int, read_url, get_or_create_price, get_day_id
+from backend.helper import rs_str_to_int, read_url, get_or_create_price, latest_update
 
 def get_detail_url(rs_id):
     '''Get the item's page in the Grand Exchange database.'''
@@ -29,7 +29,7 @@ def parse_detail(item):
     info = get_detail_info_from_id(item.rs_id)
     item.examine = info[3]
     item.save()
-    price = get_or_create_price(item, get_day_id())
+    price = get_or_create_price(item, latest_update())
     price.min_price = info[0]
     price.price = info[1]
     price.max_price = info[2]

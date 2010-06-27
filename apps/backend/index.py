@@ -4,7 +4,7 @@ import logging
 from BeautifulSoup import BeautifulSoup
 
 from backend.models import Item
-from backend.helper import rs_str_to_int, read_url, get_or_create_price, get_day_id
+from backend.helper import rs_str_to_int, read_url, get_or_create_price, latest_update
 
 def get_index_url(letter, page):
     return 'http://services.runescape.com/m=itemdb_rs/results.ws?query=&sup=Initial%%20Letter&cat=%s&sub=All&page=%i&vis=1&order=1&sortby=name&price=&members=' % (letter, page)
@@ -32,7 +32,7 @@ def parse_index(html):
         except Item.DoesNotExist:
             item = Item(rs_id=raw_item[0], name=raw_item[1], members=raw_item[2])
             item.save()
-        price = get_or_create_price(item, get_day_id())
+        price = get_or_create_price(item, latest_update())
         price.price = raw_item[3]
         price.save()
 

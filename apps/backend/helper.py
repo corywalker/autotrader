@@ -3,7 +3,7 @@ import httplib
 import datetime
 import logging
 
-from backend.models import Price
+from backend.models import Price, Update
 
 def rs_str_to_int(string):
     string = string.replace(',', '')
@@ -17,14 +17,14 @@ def rs_str_to_int(string):
         num = float(string)
     return int(num + 0.5)
 
-def get_day_id():
-    return (datetime.date.today()-datetime.date(2010,1,1)).days
+def latest_update():
+    return Update.objects.latest()
 
-def get_or_create_price(item, day):
+def get_or_create_price(item, update):
     try:
-        price = Price.objects.get(item=item, day=day)
+        price = Price.objects.get(item=item, update=update)
     except Price.DoesNotExist:
-        price = Price(item=item, day=day)
+        price = Price(item=item, update=update)
     return price
 
 def read_url(url):

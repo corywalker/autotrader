@@ -4,7 +4,7 @@ import logging
 from BeautifulSoup import BeautifulSoup
 
 from backend.models import Item, Price
-from backend.helper import rs_str_to_int, read_url, get_or_create_price, get_day_id
+from backend.helper import rs_str_to_int, read_url, get_or_create_price, latest_update
 
 FRONT_VOLUME_URL = 'http://services.runescape.com/m=itemdb_rs/frontpage.ws?listview=1'
 VOLUME_URL = 'http://services.runescape.com/m=itemdb_rs/top100.ws?list=0&scale=0'
@@ -36,7 +36,7 @@ def loop_and_parse_volumes():
     for info in get_volume_info(read_url(VOLUME_URL)):
         item = Item.objects.get(rs_id=info[0])
         try:
-            price = Price.objects.get(item=item, day=get_day_id())
+            price = Price.objects.get(item=item, update=latest_update())
             logging.debug('Updating the info for ID #%i' % item.rs_id)
             price.seven_day_volume = info[1]
             price.save()
@@ -46,7 +46,7 @@ def loop_and_parse_front_volumes():
     for info in list(get_front_volume_info(read_url(FRONT_VOLUME_URL))):
         item = Item.objects.get(rs_id=info[0])
         try:
-            price = Price.objects.get(item=item, day=get_day_id())
+            price = Price.objects.get(item=item, update=latest_update())
             logging.debug('Updating the info for ID #%i' % item.rs_id)
             price.volume = info[1]
             price.save()

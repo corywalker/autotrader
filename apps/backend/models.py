@@ -41,10 +41,18 @@ class Item(models.Model):
         return unicode(self.name)
 
 
+class Update(models.Model):
+    '''A Grand Exchange update.'''
+    time = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        get_latest_by = 'time'
+
+
 class Price(models.Model):
     '''A price of an Item on any given day.'''
     item = models.ForeignKey(Item)
-    day = models.PositiveIntegerField()
+    update = models.ForeignKey(Update)
     price = models.PositiveIntegerField()
     max_price = models.PositiveIntegerField(blank=True, null=True)
     min_price = models.PositiveIntegerField(blank=True, null=True)
@@ -54,9 +62,10 @@ class Price(models.Model):
     def get_absolute_url(self):
         return self.item.get_url()
 
+
 class Potential(models.Model):
     '''The potential for price rise on a given day.'''
     item = models.ForeignKey(Item)
-    day = models.PositiveIntegerField()
-    potential = models.DecimalField(decimal_places=5, max_digits=10)
+    update = models.ForeignKey(Update)
+    potential = models.FloatField(default=0)
 
