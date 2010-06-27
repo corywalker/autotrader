@@ -36,6 +36,7 @@ def parse_detail(item):
     price.save()
 
 def loop_details():
+    logging.info('Looping through detail pages.')
     for item in Item.objects.filter(examine=None).all():
         logging.debug('Updating the info for ID #%i' % item.rs_id)
         parse_detail(item)

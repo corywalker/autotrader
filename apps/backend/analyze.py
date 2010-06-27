@@ -26,6 +26,7 @@ def average_price(item, days):
     return average(get_prices(item, days))
 
 def compute_potentials():
+    logging.info('Computing potentials for each item.')
     for item in Item.objects.all():
         logging.debug('Computing potential for item #%i' % item.rs_id)
         prices = get_prices(item, 30)

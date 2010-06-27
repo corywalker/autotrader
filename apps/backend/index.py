@@ -37,6 +37,7 @@ def parse_index(html):
         price.save()
 
 def loop_and_parse_indexes():
+    logging.info('Looping through index pages.')
     letters = list('abcdefghijklmnopqrstuvwxyz')
     letters.append('Other')
     for letter in letters:
