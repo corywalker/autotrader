@@ -1,3 +1,4 @@
+import string
 from django.db import models
 
 class Item(models.Model):
@@ -14,6 +15,18 @@ class Item(models.Model):
     def get_sprite(self):
         '''Get the sprite image of the item.'''
         return 'http://services.runescape.com/m=itemdb_rs/3032_obj_sprite.gif?id=%i' % self.rs_id
+
+    def get_runetips_sprite(self):
+        '''Get the sprite image of the item from Rune Tips.'''
+        s = str(self.name).translate(string.maketrans("",""), string.punctuation)
+        s = s.replace(' ', '_')
+        return 'http://www.tip.it/runescape/item2/%s.gif' % s
+
+    def get_sprite_html(self):
+        '''Get the HTML sprite image of the item.'''
+        return u'<img src="%s" />' % self.get_sprite()
+    get_sprite_html.short_description = 'Sprite'
+    get_sprite_html.allow_tags = True
 
     def get_picture(self):
         '''Get the 3D rendering of the item.'''

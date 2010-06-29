@@ -2,7 +2,7 @@ from django.contrib import admin
 from backend.models import Item, Price, Potential, Update
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'rs_id', 'members', 'examine')
+    list_display = ('name', 'rs_id', 'members', 'examine', 'get_sprite_html')
     list_filter = ('members',)
     search_fields = ['name', 'rs_id']
 
