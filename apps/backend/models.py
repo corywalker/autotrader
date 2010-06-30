@@ -57,6 +57,9 @@ class Item(models.Model):
 class Update(models.Model):
     '''A Grand Exchange update.'''
     time = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return unicode(self.time)
     
     class Meta:
         get_latest_by = 'time'
