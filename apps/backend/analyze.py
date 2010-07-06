@@ -42,7 +42,7 @@ def compute_potentials():
   	    p.save()
             continue
         dip = 1 - (prices[0] / average)
-        p.potential += dip * 10
+        p.potential += dip * 500
         if regression[0] >= 1:
             p.potential += 80
         if price_changes[0] <= 0:
