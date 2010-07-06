@@ -14,7 +14,7 @@ class PriceAdmin(admin.ModelAdmin):
 
 class PotentialAdmin(admin.ModelAdmin):
     list_display = ('item', 'update', 'potential')
-    list_filter = ('update',)
+    list_filter = ('update', 'members')
     raw_id_fields = ['item', 'update']
     search_fields = ['item__name']
 

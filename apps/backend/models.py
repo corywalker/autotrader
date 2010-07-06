@@ -84,4 +84,9 @@ class Potential(models.Model):
     item = models.ForeignKey(Item)
     update = models.ForeignKey(Update)
     potential = models.FloatField(default=0)
+    # Just so we can drill down in the admin page:
+    members = models.BooleanField()
+
+    class Meta:
+        ordering = ('-potential',)
 

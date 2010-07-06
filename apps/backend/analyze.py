@@ -35,6 +35,7 @@ def compute_potentials():
         price_changes = get_price_changes(item, 30)
         p, new = Potential.objects.get_or_create(item=item, update=latest_update())
         p.potential = 0
+        p.members = item.members
         # Hack! Needs to just set a zero potential if fails.
         try:
             regression = get_price_change_regression(item, 4)
@@ -48,6 +49,8 @@ def compute_potentials():
         if price_changes[0] <= 0:
             p.potential += 80
         if price_objects[0].volume != None:
+            p.potential += 80
+        if average >= 10:
             p.potential += 80
         p.save()
 
