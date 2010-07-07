@@ -12,19 +12,23 @@ from backend.models import Update
 LOG_FILENAME = 'autotrader.log'
 ITEM_INFO_FILENAME = 'test_item_info.dat'
 
-def initialize_logging():
-    logging.basicConfig(filename=LOG_FILENAME,
-                        level=logging.DEBUG,
-                        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-                        datefmt='%m-%d %H:%M')
-    # define a Handler which writes to the sys.stderr
-    console = logging.StreamHandler()
-    # set a format which is simpler for console use
+def add_file_log(filename):
+    handler = logging.FileHandler(filename)
     formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s', '%m-%d %H:%M')
-    # tell the handler to use this format
-    console.setFormatter(formatter)
-    # add the handler to the root logger
-    logging.getLogger('').addHandler(console)
+    handler.setFormatter(formatter)
+    handler.setLevel(logging.DEBUG)
+    logging.getLogger().addHandler(handler)
+
+def add_console_log():
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s', '%m-%d %H:%M')
+    handler.setFormatter(formatter)
+    handler.setLevel(5)
+    logging.getLogger().addHandler(handler)
+
+def initialize_logging():
+    add_file_log(LOG_FILENAME)
+    add_console_log()
 
 def update_items():
     loop_and_parse_indexes()
