@@ -27,6 +27,7 @@ def add_console_log():
     logging.getLogger().addHandler(handler)
 
 def initialize_logging():
+    logging.getLogger().setLevel(0)
     add_file_log(LOG_FILENAME)
     add_console_log()
 
