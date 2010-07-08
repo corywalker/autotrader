@@ -18,8 +18,13 @@ def get_price_changes(item, days):
     return derivative(prices)
 
 def get_price_change_regression(item, days):
+    # Perform some ordering gymnastics to get it in positive time and
+    # have the latest change at x=0
     y = get_price_changes(item, days)
-    x = range(0, len(y))
+    y.reverse()
+    x = range(-len(y) + 1, 1)
+    #logging.log(5, str(x))
+    #logging.log(5, str(y))
     return linreg(x, y)
 
 def average_price(item, days):
@@ -38,19 +43,27 @@ def compute_potential(item):
     price_changes = get_price_changes(item, 30)
     # Calculate the potential
     try:
-        regression = get_price_change_regression(item, 4)
+        regression = get_price_change_regression(item, 3)
     except ZeroDivisionError:
         logging.log(5, 'Not enough price history.')
         return potential
+    logging.log(5, 'The price data is %s.' % (prices[:5],))
+    logging.log(5, 'Average price over 30 days is %f' % average)
+    logging.log(5, 'The price change data is %s.' % (price_changes[:5],))
+    logging.log(5, 'The price change regression data is %s.' % (regression,))
     dip = (1 - (prices[0] / average)) * 100
-    logging.log(5, 'Dip is %f%%, adding %f.' % (dip, dip * 5))
-    potential += dip * 5
-    if regression[0] >= 1:
-        logging.log(5, 'The change slope (%f) is at least 1. Adding 80.' % regression[0])
+    logging.log(5, 'Dip is %f%%, adding %f.' % (dip, min(dip * 10, 150)))
+    potential += min(dip * 10, 150)
+    if regression[0] > 0:
+        logging.log(5, 'The change slope (%f) is positive. Adding 80.' % regression[0])
         potential += 80
     if price_changes[0] <= 0:
-        logging.log(5, 'The latest price change (%d) was not positive. Adding 80.' % price_changes[0])
+        logging.log(5, 'The latest price change (%d) was negative. Adding 80.' % price_changes[0])
         potential += 80
+        price_change_percent = -price_changes[0] / average * 100
+        if price_change_percent < 2.0:
+            logging.log(5, 'The latest price change percent (%f) is less than 2.0. Adding 80.' % price_change_percent)
+            potential += 80
     if price_objects[0].volume != None:
         logging.log(5, 'This item is frequently traded. Adding 80.')
         potential += 80
