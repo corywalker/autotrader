@@ -27,6 +27,23 @@ def get_price_change_regression(item, days):
     #logging.log(5, str(y))
     return linreg(x, y)
 
+def get_price_change_percents(item, days):
+    prices = get_prices(item, days+1)
+    percents = []
+    for i in range(1, len(prices)):
+        change = prices[i-1] - prices[i]
+        percent = (float(change) / float(prices[i])) * 100
+        percents.append(percent)
+    return percents
+
+def is_manipulated(item):
+    percents = get_price_change_percents(item, 5)
+    count = 0
+    for percent in percents:
+        if abs(percent) > 4:
+            count += 1
+    return count >= 4
+
 def average_price(item, days):
     return average(get_prices(item, days))
 
@@ -65,11 +82,14 @@ def compute_potential(item):
             logging.log(5, 'The latest price change percent (%f) is less than 2.0. Adding 80.' % price_change_percent)
             potential += 80
     if price_objects[0].volume != None:
-        logging.log(5, 'This item is frequently traded. Adding 80.')
-        potential += 80
+        logging.log(5, 'This item is frequently traded. Adding 100.')
+        potential += 100
     if average >= 10:
         logging.log(5, 'This item has a decently high price. Adding 80.')
         potential += 80
+    if is_manipulated(item):
+        logging.log(5, 'This item has possibly been manipulated by a clan. Subtracting 100.')
+        potential -= 100
     return potential
 
 def compute_potentials():
