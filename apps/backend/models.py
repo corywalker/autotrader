@@ -14,7 +14,7 @@ class Item(models.Model):
 
     def get_sprite(self):
         '''Get the sprite image of the item.'''
-        return 'http://services.runescape.com/m=itemdb_rs/3032_obj_sprite.gif?id=%i' % self.rs_id
+        return 'http://services.runescape.com/m=itemdb_rs/3177_obj_sprite.gif?id=%i' % self.rs_id
 
     def get_runetips_sprite(self):
         '''Get the sprite image of the item from Rune Tips.'''
